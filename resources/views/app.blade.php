@@ -9,6 +9,20 @@
     <link href="/css/bootstrap.min.css" rel="stylesheet">
     <link href="/css/bootstrap-theme.min.css" rel="stylesheet">
     <link href="/css/app.css" rel="stylesheet">
+<!-- Added for date picker -->
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+    <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    <link rel="stylesheet" href="/public/timepicker/jquery.timepicker.css">
+    <link rel="stylesheet" href="/resources/demos/style.css">
+    <script src="/public/timepicker/jquery.timepicker.min.js"></script>
+    <script>
+        $(function() {
+            $( "#datepicker" ).datepicker();
+        });
+        $('#basicExample').timepicker();
+    </script>
+<!-- Added for date picker -->
 
     <!-- Fonts -->
     <!--<link href='//fonts.googleapis.com/css?family=Roboto:400,300' rel='stylesheet' type='text/css'>-->
@@ -35,7 +49,7 @@
 
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
-                <li><a href="/">Home</a></li>
+                <li><a href="/home">Home</a></li>
             </ul>
 
             <ul class="nav navbar-nav navbar-right">

@@ -29,7 +29,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('roombooks','RoomBookController@index');
+Route::get('roombook','RoomBookController@index');
 Route::post('roombook_action','RoomBookController@store');
 //Route::get('register', function(){
 //return View::make('register');
