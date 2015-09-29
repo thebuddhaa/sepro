@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use \Config;
+use App\User;
 
 class HeyController extends Controller
 {
@@ -17,8 +18,12 @@ class HeyController extends Controller
      */
     public function index()
     {
-        $x = Config::get('app.timezone');
-        return $x;
+        // $x = Config::get('app.timezone');
+        $x = User::where('name','sanket')->first();
+        // return $x;
+        $data = $x->username;
+        // return $data;
+        return view('heyuser')->with('username',$data);
     }
 
     /**

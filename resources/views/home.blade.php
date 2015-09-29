@@ -7,7 +7,7 @@
 
         <div class="row">
             <div class="col-lg-6 text-left">
-                <h1>Welcome </h1>
+                <h1>Welcome {{ $username }} </h1>
                 <p class="lead">This is an awesome Room Booking Portal. :)</p>
                 <p>Supports: </p>
             </div>
