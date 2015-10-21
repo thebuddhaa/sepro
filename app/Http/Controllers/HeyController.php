@@ -33,7 +33,7 @@ class HeyController extends Controller
      */
     public function create()
     {
-        //
+        return view('createheyuser');
     }
 
     /**
@@ -44,7 +44,9 @@ class HeyController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $input = $request->all();
+
+        return redirect('heyuser');
     }
 
     /**
@@ -55,7 +57,9 @@ class HeyController extends Controller
      */
     public function show($id)
     {
-        //
+        $user = User::findOrFail($id);
+
+        return view('heyuser',compact('user'));
     }
 
     /**

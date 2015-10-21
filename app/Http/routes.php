@@ -35,7 +35,9 @@ Route::post('roombook_action','RoomBookController@store');
 //return View::make('register');
 //});
 Route::get('hey','HeyController@index');
-
+Route::get('hey/create','HeyController@create');
+Route::post('hey/create','HeyController@store');
+Route::get('hey/{id}','HeyController@show');
 //Route::post('register_action', 'RegisterController@store');
 
 // Route::get('registered', 'RegisterController@store');
