@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
+use Auth;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Input;
@@ -43,6 +43,14 @@ class RoomBookController extends Controller
 //        }
         return ("Success");
     }
+    public function home()
+{
+    $hname=Auth::user();
+    $hmail=Auth::user()->email;
+    $user_earlier_booked= DB::table('roombook')->where('username', $hmail)->get();
+    $all_booked_rooms=DB::table('roombook')->get();
+    return view('home')->with(['user_earlier_booked' =>$user_earlier_booked])->with('hname',$hname)->with(['all_booked_rooms' =>$all_booked_rooms]);
+}
 
     /**
      * Store a newly created resource in storage.

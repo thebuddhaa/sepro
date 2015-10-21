@@ -7,13 +7,29 @@
 
         <div class="row">
             <div class="col-lg-6 text-left">
-                <h1>Welcome {{ $username }} </h1>
-                <p class="lead">This is an awesome Room Booking Portal. :)</p>
-                <p>Supports: </p>
+                <h1>Welcome {{$hname->username}}</h1>
+                <p class="lead">This is a Room Booking Portal. :)</p>
+                <h3>Your Previous bookings are: </h3>
+                <table border="2" style= "background-color: #B0B0B0 ; color: #282828 ; margin: 1 auto;" >
+            <tr>
+                <td >Room number</td>
+                <td >Purpose</td>
+                <td >Scheduled on</td>
+                <td >Duration</td>
+            </tr>
+            @foreach($user_earlier_booked as $result)
+            <tr>
+                 <td> {{$result->room_no}} </td>
+                 <td> {{$result->purpose}} </td> 
+                <td>{{$result->starttime}}</td>
+                <td> {{$result->duration}} </td>
+                
+            </tr>
+            @endforeach
+        </table>
             </div>
-
             <div class="col-lg-6 text-left">
-                <h1><a href="/roombook">Go To Room Booking</a> </h1>
+                <h1><a href="/roombook">Make a new Booking</a> </h1>
                 
                 {!! Form::open(array('url' => 'roombook_action')) !!}
                 <div class="container">
@@ -52,6 +68,24 @@
                 {!! Form::close() !!}
                 <p class="lead"></p>
             </div>
+            <h3>Rooms already booked for your reference</h3>
+      <table border="2" style= "background-color: #B0B0B0 ; color: #282828 ; margin: 1 auto;" >
+            <tr>
+                <td >Room number</td>
+                <td >Purpose</td>
+                <td >Scheduled on</td>
+                <td >Duration</td>
+            </tr>
+            @foreach($all_booked_rooms as $result)
+            <tr>
+                 <td> {{$result->room_no}} </td>
+                 <td> {{$result->purpose}} </td> 
+                <td>{{$result->starttime}}</td>
+                <td> {{$result->duration}} </td>
+                
+            </tr>
+            @endforeach
+        </table>
         </div>
         <!-- /.row -->
 
