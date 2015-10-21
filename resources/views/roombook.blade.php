@@ -1,65 +1,79 @@
-<!doctype html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Room Booking </title>
+@extends('app')
 
-    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
-    <script src="//code.jquery.com/jquery-1.10.2.js"></script>
-    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
-    <link rel="stylesheet" href="/public/timepicker/jquery.timepicker.css">
-    <link rel="stylesheet" href="/resources/demos/style.css">
-    <script src="/public/timepicker/jquery.timepicker.min.js"></script>
+@section('scripts')
+    <script src="/js/moment-with-locales.js"></script>
+    <script src="/js/bootstrap-datetimepicker.js"></script>
+    <script src="/js/transition.js"></script>
+    <script src="/js/collapse.js"></script>
+
     <script>
-        $(function() {
-            $( "#datepicker" ).datepicker();
+
+
+        $(function(){
+            $('#startdatetime,#enddatetime').datetimepicker({
+                useCurrent: false,
+                minDate: moment(1, 'h')
+            });
+            $("#startdatetime").on("dp.change", function (e) {
+                $("#enddatetime").data("DateTimePicker").minDate(e.date);
+            });
+            $("#enddatetime").on("dp.change", function (e) {
+                $("#startdatetime").data("DateTimePicker").maxDate(e.date);
+            });
         });
-
-        $('#basicExample').timepicker();
-
-
+        //        $('#enddatetime').data("DateTimePicker").show();
     </script>
 
-</head>
-<body>
+@endsection
 
-{!! Form::open(array('url' => 'roombook_action')) !!}
+@section('content')
 
 
-<div class="container">
-    <div class="row">
-        <div class='col-sm-6'>
-            <div class="form-group">
-                <select name="room_no">
-                    <option value="sic-201">sic-201</option>
-                    <option value="sic-205">sic-205</option>
-                    <option value="sic-205">sic-204</option>
-                </select>
-                <p>Date: <input type="text" id="datepicker"></p>
-                <p>Start Time :</p><p><input name="starttime" id="basicExample" type="text" class="time" /></p>
-                <p>End Time :</p><div class='input-group date' id='datetimepicker3'>
-                    <input name="endtime" type='text' class="form-control" />
-                    <span class="input-group-addon">
-                        <span class="glyphicon glyphicon-time"></span>
-                    </span>
-                </div>
-            </div>
+    <h2>Book Room:</h2>
+
+    {!! Form::open(array('url' => 'roombook_action')) !!}
+
+    <div class='col-sm-6'>
+
+        <div class="form-group">
+            {!! Form::label('Room No:') !!}
+            {!! Form::text('room_no', null,
+                array('required',
+                      'class'=>'form-control',
+                      'placeholder'=>'Room No')) !!}
         </div>
-        <script type="text/javascript">
-            $(function () {
-                $('#datetimepicker3').datetimepicker({
-                    format: 'LT'
-                });
-            });
-        </script>
+
+        <div class="form-group">
+            {!! Form::label('Start Time:') !!}
+            {!! Form::text('starttime', null,
+                array('required',
+                      'class'=>'form-control',
+                      'placeholder'=>'Enter start time',
+                      'id'=>'startdatetime')) !!}
+        </div>
+
+        <div class="form-group">
+            {!! Form::label('End Time:') !!}
+            {!! Form::text('endtime', null,
+                array('required',
+                      'class'=>'form-control',
+                      'placeholder'=>'Enter end time',
+                      'id'=>'enddatetime')) !!}
+        </div>
+
+        <div class="form-group">
+            {!! Form::label('Event name:') !!}
+            {!! Form::text('purpose', null,
+                array('required',
+                      'class'=>'form-control',
+                      'placeholder'=>'Enter Event Name')) !!}
+        </div>
+
+        <div class="form-group">
+            {!! Form::submit('Book Now',
+              array('class'=>'btn btn-primary')) !!}
+        </div>
     </div>
-</div>
-<p>Event name :</p>
+    {!! Form::close() !!}
 
-<p>{!! Form::text('purpose') !!}</p>
-
-<p>{!! Form::submit('Submit') !!}</p>
-{!! Form::close() !!}
-
-</body>
-</html>
+@endsection
