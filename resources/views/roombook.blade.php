@@ -8,17 +8,10 @@
 
     <script>
 
-
         $(function(){
             $('#startdatetime,#enddatetime').datetimepicker({
-                useCurrent: false,
-                minDate: moment(1, 'h')
-            });
-            $("#startdatetime").on("dp.change", function (e) {
-                $("#enddatetime").data("DateTimePicker").minDate(e.date);
-            });
-            $("#enddatetime").on("dp.change", function (e) {
-                $("#startdatetime").data("DateTimePicker").maxDate(e.date);
+                minDate: moment(1, 'H'),
+                format: 'DD-MM-YYYY HH:mm'
             });
         });
         //        $('#enddatetime').data("DateTimePicker").show();
@@ -36,6 +29,14 @@
     <div class='col-sm-6'>
 
         <div class="form-group">
+            {!! Form::label('User:') !!}
+            {!! Form::text('user', null,
+                array('required',
+                      'class'=>'form-control',
+                      'placeholder'=>'Username')) !!}
+        </div>
+
+        <div class="form-group">
             {!! Form::label('Room No:') !!}
             {!! Form::text('room_no', null,
                 array('required',
@@ -45,7 +46,7 @@
 
         <div class="form-group">
             {!! Form::label('Start Time:') !!}
-            {!! Form::text('starttime', null,
+            {!! Form::input('date','starttime', null,
                 array('required',
                       'class'=>'form-control',
                       'placeholder'=>'Enter start time',
@@ -54,7 +55,7 @@
 
         <div class="form-group">
             {!! Form::label('End Time:') !!}
-            {!! Form::text('endtime', null,
+            {!! Form::input('date','endtime', null,
                 array('required',
                       'class'=>'form-control',
                       'placeholder'=>'Enter end time',

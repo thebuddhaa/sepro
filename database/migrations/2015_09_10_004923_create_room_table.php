@@ -18,7 +18,7 @@ class CreateRoomTable extends Migration
             $table->string('location');
             $table->string('room_type');
             $table->string('capacity');
-            $table->string('facilty');
+            $table->string('facility');
             $table->timestamps();
         });
     }

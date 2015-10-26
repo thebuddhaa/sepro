@@ -35,7 +35,13 @@ class RedirectIfAuthenticated
     public function handle($request, Closure $next)
     {
         if ($this->auth->check()) {
-            return redirect('/');
+            //we have a logged user check if it's admin
+            if($this->auth->user()->isAdmin()){
+                return new RedirectResponse(url('/admin'));
+            }else{
+                return new RedirectResponse(url('/admin'));
+            }
+//            return redirect('/home');
         }
 
         return $next($request);

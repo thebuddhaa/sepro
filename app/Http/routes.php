@@ -29,11 +29,18 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('roombook','RoomBookController@index');
-Route::post('roombook_action','RoomBookController@store');
+Route::get('roombook', ['middleware' => 'auth', 'uses' => 'RoomBookController@index']);
+Route::get('roombookcancel', ['middleware' => 'auth', 'uses' => 'RoomBookController@gotoroomcancel']);
+Route::post('roombook_action', 'RoomBookController@store');
+Route::post('roombookcancel_action',['middleware' => 'auth', 'users' => 'RoomBookController@roomcancel']);
+
+Route::get('addroom', 'RoomInfoController@addroom');
+Route::post('roomaddaction', 'RoomInfoController@addroomaction');
+Route::get('viewroom', 'RoomInfoController@viewroom');
 //Route::get('register', function(){
 //return View::make('register');
 //});
+
 //Route::post('register_action', 'RegisterController@store');
 
 // Route::get('registered', 'RegisterController@store');
@@ -48,4 +55,7 @@ Route::controllers([
     'password' => 'Auth\PasswordController',
 ]);
 
-Route::get('home','RoomBookController@home',['middleware' => 'auth']);
+//Route::get('home', ['middleware' => 'auth', function(){
+//    return view('home');//->with('uname' => $uname);
+//}]);
+Route::get('home', ['middleware' => 'auth', 'uses' => 'RoomBookController@home']);
