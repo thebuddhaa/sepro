@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use DB;
 
 class RoomInfo extends Model
 {
@@ -14,5 +15,11 @@ class RoomInfo extends Model
     public static function saveFormData($data)
     {
         DB::table('room_info')->insert($data);
+    }
+
+    public static function getallRooms()
+    {
+        $lsofrooms = DB::table('room_info')->get();
+        return $lsofrooms;
     }
 }

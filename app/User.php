@@ -48,11 +48,14 @@ class User extends Model implements AuthenticatableContract,
     
     protected $guarded = array();
 	// protected $table = 'users'; // table name
-	public $timestamps = false ; // to disable default timestamp fields
+//	public $timestamps = false ; // to disable default timestamp fields
 
 	// model function to store form data to database
-	public static function saveFormData($data)
-	{
+	public static function saveFormData($data) {
 	    DB::table('users')->insert($data);
 	}
+
+    public function isAdmin(){
+        return role == "admin";
+    }
 }

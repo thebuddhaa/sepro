@@ -4,6 +4,7 @@ namespace Illuminate\Foundation\Auth;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Mockery\CountValidator\Exception;
 
 trait RegistersUsers
 {
@@ -34,9 +35,12 @@ trait RegistersUsers
                 $request, $validator
             );
         }
-
-        Auth::login($this->create($request->all()));
-
+        try {
+            Auth::login($this->create($request->all()));
+        }
+        catch(Exception $e){
+            echo "exception occurred: ".$e;
+        }
         return redirect($this->redirectPath());
     }
 }
