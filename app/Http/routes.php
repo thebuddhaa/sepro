@@ -32,7 +32,7 @@ Route::get('/', function () {
 Route::get('roombook', ['middleware' => 'auth', 'uses' => 'RoomBookController@index']);
 Route::get('roombookcancel', ['middleware' => 'auth', 'uses' => 'RoomBookController@gotoroomcancel']);
 Route::post('roombook_action', 'RoomBookController@store');
-Route::post('roombookcancel_action',['middleware' => 'auth', 'users' => 'RoomBookController@roomcancel']);
+Route::post('roombookcancel_action','RoomBookController@roomcancel');
 
 Route::get('addroom', 'RoomInfoController@addroom');
 Route::post('roomaddaction', 'RoomInfoController@addroomaction');
@@ -58,4 +58,6 @@ Route::controllers([
 //Route::get('home', ['middleware' => 'auth', function(){
 //    return view('home');//->with('uname' => $uname);
 //}]);
-Route::get('home', ['middleware' => 'auth', 'uses' => 'RoomBookController@home']);
+Route::get('home', ['middleware' => 'auth', 'uses' => 'HomeController@gotohome']);
+
+Route::get('bookedrooms', ['middleware' => 'auth', 'uses' => 'HomeController@getbookedRooms']);

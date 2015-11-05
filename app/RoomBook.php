@@ -24,9 +24,14 @@ class RoomBook extends Model
 
 	public static function delbooking($data)
 	{
-
-		DB::table('roombook')->where('user', $data['username'])
+		return DB::table('roombook')->where('user', $data['username'])
 			->where('id',$data['id'])
 			->delete();
+	}
+
+	public static function getBookingIDByUserID($username)
+	{
+		return DB::table('roombook')->where('user', $username)
+			->lists('id','id');
 	}
 }

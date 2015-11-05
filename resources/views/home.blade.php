@@ -2,55 +2,57 @@
 
 @section('content')
 
-        <!-- Page Content -->
+		<!-- Page Content -->
 <div class="container">
 
-    <div class="row">
-        <div class="col-lg-6 text-left">
-            <h1>Welcome {{$hname->username}}</h1>
+	<div class="row">
+		<div class="col-lg-6 text-left">
+			<h1>Welcome {{$hname->name}}</h1>
 
-            <p class="lead">This is a Room Booking Portal. :)</p>
-            @if(!empty($user_earlier_booked))
-                <div class="col-lg-6 text-left">
-                    <h3>Your Previous bookings are: </h3>
-                    <table border="2" class="table table-striped table-bordered" data-height="400">
-                        <tr>
-                            <th>Booking ID</th>
-                            <th>Room number</th>
-                            <th>Purpose</th>
-                            <th>Scheduled on</th>
-                            <th>Scheduled upto</th>
-                        </tr>
-                        @foreach($user_earlier_booked as $result)
-                            <tr>
-                                <td> {{$result->id}} </td>
-                                <td> {{$result->room_no}} </td>
-                                <td> {{$result->purpose}} </td>
-                                <td>{{$result->starttime}}</td>
-                                <td> {{$result->endtime}} </td>
+			<p class="lead">This is a Room Booking Portal. :)</p>
+			@if(!empty($user_earlier_booked))
+				<div class="col-lg-8 text-left">
+					<h3>Your Previous bookings are: </h3>
+					<table border="2" class="table table-striped table-bordered" data-height="400">
+						<tr>
+							<th>Booking ID</th>
+							<th>Room number</th>
+							<th>Purpose</th>
+							<th>Scheduled on</th>
+							<th>Scheduled upto</th>
+							<th>Booking Status</th>
+						</tr>
+						@foreach($user_earlier_booked as $result)
+							<tr>
+								<td> {{$result->id}} </td>
+								<td> {{$result->room_no}} </td>
+								<td> {{$result->purpose}} </td>
+								<td>{{$result->starttime}}</td>
+								<td> {{$result->endtime}} </td>
+								<td> {{$result->status}} </td>
+							</tr>
+						@endforeach
+					</table>
+				</div>
+			@else
+				<div class="bg-primary">
+					<p>You have no previous bookings</p>
+				</div>
+			@endif
+		</div>
+		<div class="col-lg-6 text-left">
+			<h1><a href="/roombook">Make a new Booking</a></h1>
+			<h1><a href="/roombookcancel">Cancel a Booking</a></h1>
+			<h3><a href="https://www.cse.iitb.ac.in/page191?Building=KR&floor=3">Floor Plan</a></h3>
+			<h3><a href="/bookedrooms">Booked Rooms</a></h3>
 
-                            </tr>
-                        @endforeach
-                    </table>
-                </div>
-            @else
-                <div class="bg-primary">
-                    <p>You have no previous bookings</p>
-                </div>
-            @endif
-        </div>
-        <div class="col-lg-6 text-left">
-            <h1><a href="/roombook">Make a new Booking</a></h1>
-
-            <h1><a href="/roombookcancel">Cancel a Booking</a></h1>
-
-            @if($hname->role == 'admin')
-                <h1><a href="/addroom">Add a room</a></h1>
-                <h1><a href="/viewroom">View rooms</a></h1>
-                @endif
+			@if($hname->role == 'admin')
+				<h1><a href="/addroom">Add a room</a></h1>
+				<h1><a href="/viewroom">View rooms</a></h1>
+				@endif
 
 
-                        <!--
+						<!--
 			{{--{!! Form::open(array('url' => 'roombook_action')) !!}--}}
 			<div class="container">
 				<div class="row">
@@ -88,27 +90,9 @@
 			{{--{!! Form::close() !!}--}}
 			<p class="lead"></p>
 		-->
-        </div>
-        <h3>Rooms already booked for your reference</h3>
-        <table border="2" class="table table-striped table-bordered" data-height="400">
-            <tr>
-                <th>Room number</th>
-                <th>Purpose</th>
-                <th>Scheduled on</th>
-                <th>Scheduled upto</th>
-            </tr>
-            @foreach($all_booked_rooms as $result)
-                <tr>
-                    <td> {{$result->room_no}} </td>
-                    <td> {{$result->purpose}} </td>
-                    <td>{{$result->starttime}}</td>
-                    <td> {{$result->endtime}} </td>
-
-                </tr>
-            @endforeach
-        </table>
-    </div>
-    <!-- /.row -->
+		</div>
+	</div>
+	<!-- /.row -->
 
 </div>
 <!-- /.container --></h1>

@@ -22,7 +22,9 @@ class RoomBookController extends Controller
 	 */
 	public function index()
 	{
-		return view('roombook');
+		$roomnos = RoomInfo::getRoomNos();
+		$uname = Auth::user()->username;
+		return view('roombook', ['rooms' => $roomnos, 'uname' => $uname]);
 	}
 
 	/**
@@ -32,7 +34,7 @@ class RoomBookController extends Controller
 	 */
 	public function create()
 	{
-		$room_no = \DB::table('room_info')->lists('room_no', 'id');
+		//$room_no = \DB::table('room_info')->lists('room_no', 'id');
 	}
 
 	public function roombook()
@@ -49,38 +51,60 @@ class RoomBookController extends Controller
 
 	public function gotoroomcancel()
 	{
-		return view('roombookcancel');
+		$uname = Auth::user()->username;
+
+		$bookingids = RoomBook::getBookingIDByUserID($uname);
+
+		return view('roombookcancel')->with('uname',$uname)
+				->with('bookedrooms', $bookingids);
 	}
 
 	public function roomcancel(Request $request)
 	{
-		$uname = Input::get('user');
-		$bookingid = Input::get('bookingid');
+		$uname = $request->input('user');
+		$bookingid = $request->input('bookingid');
 
 		$data = ['username' => $uname, 'id' => $bookingid ];
+		$ust = $this->promoteBooking($bookingid);
+		$status = RoomBook::delbooking($data);
+		if($status == 1)
+			$msg = "Booking Cancelled";
+		else
+			$msg = "There was some problem with cancellation";
+			return redirect('roombookcancel')->with('statusmsg',$msg);
 
 
-		RoomBook::delbooking($data);
-//        RoomBook::delbooking(Input::except(array('_token')));
-
-		return view('roombookcancel');
-//        return DB::table('roombook')->where('user', $uname)
-//            ->where('id',$bookingid)
-//            ->get();
 	}
 
-	public function home()
+	public static function promoteBooking($bookingid)
 	{
-		$hname = Auth::user();
-		$hmail = Auth::user()->email;
-		$huname = Auth::user()->username;
-		$user_earlier_booked = DB::table('roombook')->where('user', $huname)->get();
-		$all_booked_rooms = DB::table('roombook')->get();
-		return view('home')->with(['user_earlier_booked' => $user_earlier_booked])
-			->with('hname', $hname)
-			->with(['all_booked_rooms' => $all_booked_rooms]);
-	}
+		// get list of rooms with waiting status on the same room
+		// sort the output in ascending order and pick 1st row
+		// change its booking status to C
 
+		$oldbooking = DB::table('roombook')->where('id', $bookingid)->get();
+//		dd($oldbooking[0]->id);
+
+		$waitingroom = DB::table('roombook')
+			->where('starttime', '<', $oldbooking[0]->endtime)
+			->where('starttime', '>', $oldbooking[0]->starttime)
+			->where('status', 'W')
+			->orderBy('id')
+			->first();
+
+		if($waitingroom)
+		{
+			$updstatus = DB::table('roombook')
+				->where('id', $waitingroom->id)
+				->update(['status' => 'C']);
+		}
+		else
+		{
+			$updstatus = 0;
+		}
+
+		return $updstatus;
+	}
 
 	/**
 	 * Store a newly created resource in storage.
@@ -90,6 +114,8 @@ class RoomBookController extends Controller
 	 */
 	public function store(Request $request)
 	{
+		$hname = Auth::user();
+
 		$rno = Input::get('room_no');
 
 		$st = Carbon::createFromFormat('d-m-Y H:i', Input::get('starttime'));
@@ -109,14 +135,15 @@ class RoomBookController extends Controller
 			$otherinputs['status'] = 'C';
 			RoomBook::saveFormData($otherinputs);
 
-//            return ("Room Booked");
-			return view('home');
+			return redirect('home');
 		} else {
 			$otherinputs['status'] = 'W';
 			RoomBook::saveFormData($otherinputs);
 
-			return view('home');
+			return redirect('home');
 		}
+
+//		return ("room booked");
 	}
 
 	/**
