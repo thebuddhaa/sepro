@@ -14,6 +14,13 @@ class RoomTableSeeder extends Seeder
             'room_no' => 'sic-201',
             'location' => '2nd floor, C block',
             'room_type' => 'classroom',
+            'capacity' => '70',
+            'facility' => 'AC',
+        ));
+        \App\RoomInfo::create(array(
+            'room_no' => 'sic-205',
+            'location' => '2nd floor, C block',
+            'room_type' => 'classroom',
             'capacity' => '40',
             'facility' => 'AC',
         ));
@@ -21,7 +28,7 @@ class RoomTableSeeder extends Seeder
             'room_no' => 'sic-301',
             'location' => '3nd floor, C block',
             'room_type' => 'classroom',
-            'capacity' => '40',
+            'capacity' => '70',
             'facility' => 'AC',
         ));
     }

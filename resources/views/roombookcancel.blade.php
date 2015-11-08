@@ -55,40 +55,6 @@
 					  'placeholder'=>'Enter Booking ID')) !!}
 		</div>
 
-		{{--<div class="form-group">--}}
-			{{--{!! Form::label('Room No:') !!}--}}
-			{{--{!! Form::text('room_no', null,--}}
-				{{--array('required',--}}
-					  {{--'class'=>'form-control',--}}
-					  {{--'placeholder'=>'Room No')) !!}--}}
-		{{--</div>--}}
-
-		{{--<div class="form-group">--}}
-			{{--{!! Form::label('Start Time:') !!}--}}
-			{{--{!! Form::input('date','starttime', null,--}}
-				{{--array('required',--}}
-					  {{--'class'=>'form-control',--}}
-					  {{--'placeholder'=>'Enter start time',--}}
-					  {{--'id'=>'startdatetime')) !!}--}}
-		{{--</div>--}}
-
-		{{--<div class="form-group">--}}
-			{{--{!! Form::label('End Time:') !!}--}}
-			{{--{!! Form::input('date','endtime', null,--}}
-				{{--array('required',--}}
-					  {{--'class'=>'form-control',--}}
-					  {{--'placeholder'=>'Enter end time',--}}
-					  {{--'id'=>'enddatetime')) !!}--}}
-		{{--</div>--}}
-
-		{{--<div class="form-group">--}}
-			{{--{!! Form::label('Event name:') !!}--}}
-			{{--{!! Form::text('purpose', null,--}}
-				{{--array('required',--}}
-					  {{--'class'=>'form-control',--}}
-					  {{--'placeholder'=>'Enter Event Name')) !!}--}}
-		{{--</div>--}}
-
 		<div class="form-group">
 			{!! Form::submit('Cancel Booking',
 			  array('class'=>'btn btn-primary')) !!}

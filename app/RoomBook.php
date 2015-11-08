@@ -34,4 +34,24 @@ class RoomBook extends Model
 		return DB::table('roombook')->where('user', $username)
 			->lists('id','id');
 	}
+
+	/**
+	 * A room booking belongs to one User
+	 *
+	 * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+	 */
+
+	public function users()
+	{
+		return $this->belongsTo('App\User');
+	}
+
+	/**
+	 * A Room booking is for one room
+	 * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+	 */
+	public function rooms()
+	{
+		return $this->belongsTo('App\RoomInfo');
+	}
 }

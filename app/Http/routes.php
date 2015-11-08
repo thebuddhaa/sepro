@@ -32,32 +32,21 @@ Route::get('/', function () {
 Route::get('roombook', ['middleware' => 'auth', 'uses' => 'RoomBookController@index']);
 Route::get('roombookcancel', ['middleware' => 'auth', 'uses' => 'RoomBookController@gotoroomcancel']);
 Route::post('roombook_action', 'RoomBookController@store');
-Route::post('roombookcancel_action','RoomBookController@roomcancel');
+Route::post('roombookcancel_action', 'RoomBookController@roomcancel');
 
-Route::get('addroom', 'RoomInfoController@addroom');
+Route::get('addroom', ['middleware' => 'auth', 'uses' => 'RoomInfoController@addroom']);
 Route::post('roomaddaction', 'RoomInfoController@addroomaction');
-Route::get('viewroom', 'RoomInfoController@viewroom');
-//Route::get('register', function(){
-//return View::make('register');
-//});
-
-//Route::post('register_action', 'RegisterController@store');
-
-// Route::get('registered', 'RegisterController@store');
-//Route::post('register_action', 'AccountController@login');
-
-//POST route
-//Route::post('login', 'AccountController@login');
-
+Route::get('viewroom', ['middleware' => 'auth', 'uses' => 'RoomInfoController@viewroom']);
+Route::get('confirmusers', ['middleware' => 'auth', 'uses' => 'HomeController@viewNewUsers']);
+Route::post('authorizeuser', ['middleware' => 'auth', 'uses' => 'HomeController@authorizeUser']);
 
 Route::controllers([
     'auth' => 'Auth\AuthController',
     'password' => 'Auth\PasswordController',
 ]);
 
-//Route::get('home', ['middleware' => 'auth', function(){
-//    return view('home');//->with('uname' => $uname);
-//}]);
 Route::get('home', ['middleware' => 'auth', 'uses' => 'HomeController@gotohome']);
 
 Route::get('bookedrooms', ['middleware' => 'auth', 'uses' => 'HomeController@getbookedRooms']);
+
+Route::get('awaitingconfirmation', ['middleware' => 'auth', 'uses' => 'HomeController@awaitingconf']);
