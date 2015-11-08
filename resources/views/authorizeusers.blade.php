@@ -4,16 +4,9 @@
 
         <!-- Page Content -->
 <div class="row">
-    <div class="col-lg-8 text-left">
-        <h1>Hello {{ $hname->name }}</h1>
+    <div class="col-lg-10 text-left">
+        <h2>List of Users pending for confirmation</h2>
 
-        <h1>List of Users pending for confirmation</h1>
-
-        @if(session('statusmsg'))
-            <div class="alert alert-success">
-                {{ session('statusmsg') }}
-            </div>
-        @endif
         <table border="2" class="table table-striped table-bordered" data-height="400">
             <tr>
                 <th>ID</th>
@@ -79,6 +72,14 @@
 
         </table>
     </div>
+    <div class="col-lg-2">
+        @if(session('statusmsg'))
+            <div class="alert alert-success">
+                {{ session('statusmsg') }}
+            </div>
+        @endif
+    </div>
+
 </div>
 <!-- /.row -->
 

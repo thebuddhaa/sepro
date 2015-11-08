@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
@@ -99,7 +100,10 @@ class HomeController extends Controller
         $hname = Auth::user();
         $hmail = Auth::user()->email;
         $huname = Auth::user()->username;
-        $user_earlier_booked = DB::table('roombook')->where('user', $huname)->get();
+        $user_earlier_booked = DB::table('roombook')
+            ->where('user', $huname)
+            ->where('endtime','>',Carbon::now())
+            ->get();
 
         if ($hname->status == 'R')
             return redirect('awaitingconfirmation');
@@ -110,7 +114,21 @@ class HomeController extends Controller
 
     public static function getbookedRooms()
     {
-        $all_booked_rooms = DB::table('roombook')->get();
+        $all_booked_rooms = DB::table('roombook')
+            ->where('endtime','>',Carbon::now())
+            ->where('status','C')
+            ->get();
+        return view('bookedrooms')->with(['all_booked_rooms' => $all_booked_rooms]);
+    }
+
+    public static function getPrevBookedRooms()
+    {
+        $user = Auth::user()->username;
+
+        $all_booked_rooms = DB::table('roombook')
+            ->where('user', $user)
+            ->where('endtime','<',Carbon::now())
+            ->get();
         return view('bookedrooms')->with(['all_booked_rooms' => $all_booked_rooms]);
     }
 

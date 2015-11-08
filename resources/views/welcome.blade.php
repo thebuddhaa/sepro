@@ -6,30 +6,51 @@
 <div class="container">
 
     <div class="row">
-        <div class="col-lg-6 ">
-            <h2>Welcome to Room Booking Portal</h2>
-        </div>
-        <div class="col-lg-6 text-center">
-        </div>
-        <div class="col-lg-6 text-center">
 
-            <p>CS682 Course Project</p>
-            <p>Supports: </p>
-            <ul class="list-unstyled">
-                <li>Bootstrap v3.3.1</li>
-                <li>jQuery v1.11.1</li>
-            </ul>
-            <p>Developed by:</p>
-            <ul class="list-unstyled">
-                <li>Abhay(133050083)</li>
-                <li>Sanket(14   3050089)</li>
-            </ul>
+        <h2>Welcome to Room Booking Portal</h2>
+
+        <div id="myCarousel" class="carousel slide" data-ride="carousel">
+            <!-- Carousel indicators -->
+            <ol class="carousel-indicators">
+                <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+                <li data-target="#myCarousel" data-slide-to="1"></li>
+                <li data-target="#myCarousel" data-slide-to="2"></li>
+            </ol>
+            <!-- Wrapper for carousel items -->
+            <div class="carousel-inner">
+                <div class="item active">
+                    <img src="../images/auditorium-572776_1280.jpg" alt="First Slide">
+                </div>
+                <div class="item">
+                    <img src="../images/conference-room_1280.jpg" alt="Second Slide">
+                </div>
+                <div class="item">
+                    <img src="../images/classroom-1008856_1280.jpg" alt="Third Slide">
+                </div>
+            </div>
+            <!-- Carousel controls -->
+            <a class="carousel-control left" href="#myCarousel" data-slide="prev">
+                <span class="glyphicon glyphicon-chevron-left"></span>
+            </a>
+            <a class="carousel-control right" href="#myCarousel" data-slide="next">
+                <span class="glyphicon glyphicon-chevron-right"></span>
+            </a>
+        </div>
+
+        <div class="col-lg-12 text-center">
+            <h3>CS682 Course Project</h3>
         </div>
     </div>
     <!-- /.row -->
 
 </div>
-<!-- /.container --></h1>
+
+<blockquote class="blockquote-reverse">
+    <footer>
+        Developed by Sanket and Abhay &copy as part of CS682:Software Engineering Course Project under guidance of <i>Prof. G. Sivakumar</i>
+    </footer>
+</blockquote>
+
 
 
 @endsection

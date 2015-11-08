@@ -33,6 +33,7 @@ Route::get('roombook', ['middleware' => 'auth', 'uses' => 'RoomBookController@in
 Route::get('roombookcancel', ['middleware' => 'auth', 'uses' => 'RoomBookController@gotoroomcancel']);
 Route::post('roombook_action', 'RoomBookController@store');
 Route::post('roombookcancel_action', 'RoomBookController@roomcancel');
+Route::get('prevbookings', ['middleware' => 'auth', 'uses' => 'HomeController@getPrevBookedRooms']);
 
 Route::get('addroom', ['middleware' => 'auth', 'uses' => 'RoomInfoController@addroom']);
 Route::post('roomaddaction', 'RoomInfoController@addroomaction');

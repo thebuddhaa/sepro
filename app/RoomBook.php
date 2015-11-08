@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use DB;
 
@@ -31,7 +32,9 @@ class RoomBook extends Model
 
 	public static function getBookingIDByUserID($username)
 	{
-		return DB::table('roombook')->where('user', $username)
+		return DB::table('roombook')
+			->where('user', $username)
+			->where('endtime','>',Carbon::now())
 			->lists('id','id');
 	}
 

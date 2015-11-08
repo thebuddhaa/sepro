@@ -6,13 +6,24 @@
 <div class="container">
 
 	<div class="row">
-		<div class="col-lg-8 text-left">
-			<h1>Welcome {{$hname->name}},</h1>
 
-			<p class="lead">This is a Room Booking Portal.</p>
+		<h1 style="text-align: center">Room Booking Portal</h1>
+		<h2>Welcome {{$hname->name}},</h2>
+		{{--<p class="lead">This is a Room Booking Portal.</p>--}}
+
+		{{--<div class="jumbotron">--}}
+
+		{{--<div class="col-lg-12">--}}
+			{{--<img src="images/auditorium-572776_1280.jpg" style="max-width:100%;max-height:100%;">--}}
+		{{--</div>--}}
+		<div class="col-lg-12">
+
+		</div>
+		<div class="col-lg-9 text-left" style="background-image: url("images/auditorium-572776_1280.jpg")">
+
 			@if(!empty($user_earlier_booked))
 				<div class="col-lg-12 text-left">
-					<h3>Your Previous bookings are: </h3>
+					<h3>Your bookings are: </h3>
 					<table border="2" class="table table-striped table-bordered table-hover" data-height="400">
 						<tr>
 							<th>Booking ID</th>
@@ -40,28 +51,30 @@
 					</table>
 				</div>
 			@else
-				<div class="bg-primary">
+				<div class="alert alert-dismissible alert-info">
 					<p>You have no previous bookings</p>
 				</div>
 			@endif
 		</div>
-		<div class="col-lg-2 sidebar-offcanvas" id="sidebar">
+		<div class="col-lg-3 sidebar-offcanvas" id="sidebar">
 			<div class="list-group">
-				<a href="/roombook" class="list-group-item">Make a new Booking</a>
+				<a href="/roombook" class="list-group-item text-center"><strong>Make a new Booking</strong></a>
 
-				<a href="/roombookcancel" class="list-group-item">Cancel a Booking</a>
+				<a href="/roombookcancel" class="list-group-item text-center"><strong>Cancel a Booking</strong></a>
 
-				<a href="https://www.cse.iitb.ac.in/page191?Building=KR&floor=3" class="list-group-item">Floor Plan</a>
+				<a href="/prevbookings" class="list-group-item text-center"><strong>My Previous Bookings</strong></a>
 
-				<a href="/bookedrooms" class="list-group-item">Booked Rooms</a>
+				<a href="/bookedrooms" class="list-group-item text-center"><strong>Current Booked Rooms</strong></a>
 
 				@if($hname->role == 'admin')
-					<h1><a href="/addroom">Add a room</a></h1>
-					<h1><a href="/viewroom">View rooms</a></h1>
-					<h1><a href="/confirmusers">Confirm Users</a></h1>
+					<a href="/addroom" class="list-group-item text-center"><strong>Add a room</strong></a>
+					<a href="/viewroom" class="list-group-item text-center"><strong>View rooms</strong></a>
+					<a href="/confirmusers" class="list-group-item text-center"><strong>Authorize New Users</strong></a>
 				@endif
-			</div>
 
+				<a href="https://www.cse.iitb.ac.in/page191?Building=KR&floor=3" class="list-group-item text-center"><strong>Floor Plan</strong></a>
+
+			</div>
 		</div>
 	</div>
 	<!-- /.row -->

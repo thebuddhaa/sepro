@@ -16,4 +16,5 @@ return array(
     $vendorDir . '/laravel/framework/src/Illuminate/Support/helpers.php',
     $vendorDir . '/illuminate/html/helpers.php',
     $vendorDir . '/laravelcollective/html/src/helpers.php',
+    $vendorDir . '/reportico/laravel-reportico/src/Reportico/Reportico/reportico.php',
 );

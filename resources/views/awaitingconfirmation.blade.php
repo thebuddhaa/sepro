@@ -11,7 +11,7 @@
 
 			<p class="lead">This is a Room Booking Portal. </p>
 
-			<div class="bg-primary">
+			<div class="alert alert-dismissible alert-info">
 				<p>Your registration is not yet confirmed. Please wait for confirmation.</p>
 			</div>
 		</div>
