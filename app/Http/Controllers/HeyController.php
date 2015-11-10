@@ -17,8 +17,13 @@ class HeyController extends Controller
      */
     public function index()
     {
-        $x = Config::get('app.timezone');
-        return $x;
+//        $x = Config::get('app.timezone');
+
+//        $y = Config::set('customconfig.my_val','mydoublelue');
+
+        $y = Config::get('roomconfig.event_types');
+
+        return $y;
     }
 
     /**

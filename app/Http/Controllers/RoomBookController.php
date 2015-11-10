@@ -12,33 +12,78 @@ use Illuminate\Support\Facades\Input;
 use App\RoomBook;
 use App\RoomInfo;
 use DB;
+use Config;
 
 class RoomBookController extends Controller
 {
-	/**
-	 * Display a listing of the resource.
-	 *
-	 * @return Response
-	 */
-	public function index()
-	{
-		$roomnos = RoomInfo::getRoomNos();
-		$uname = Auth::user()->username;
-		return view('roombook', ['rooms' => $roomnos, 'uname' => $uname]);
-	}
+    /**
+     * Display a listing of the resource.
+     *
+     * @return Response
+     */
+    public function index()
+    {
+        //
+    }
 
-	/**
-	 * Show the form for creating a new resource.
-	 *
-	 * @return Response
-	 */
-	public function create()
-	{
-		//$room_no = \DB::table('room_info')->lists('room_no', 'id');
-	}
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return Response
+     */
+    public function create()
+    {
+        //$room_no = \DB::table('room_info')->lists('room_no', 'id');
+    }
 
-	public function roombook()
-	{
+    public function gotoroombook()
+    {
+        $settings = (Config::get('roomconfig.event_types'));
+//        return $settings;
+        $eventnames;
+        foreach ($settings as $key => $value) {
+            $eventnames[$key] = $value['event'];
+        }
+//        return $eventnames;
+        $roomnos = RoomInfo::getRoomNos();
+        $uname = Auth::user()->username;
+        return view('roombook', ['rooms' => $roomnos, 'uname' => $uname, 'eventtypes' => $eventnames]);
+    }
+
+    public function getroomswithcap(Request $request)
+    {
+
+//		if ( Session::token() !== Input::get( '_token' ) ) {
+//			return Response::json( array(
+//				'msg' => 'Unauthorized attempt to create setting'
+//			) );
+//		}
+
+        if ($request->ajax()) {
+//		return "AJAX";
+            $data = $request->get('data1');
+
+            $availrooms = RoomInfo::getRoomsGreaterThanCapacity($data);
+
+            return $availrooms;
+//		return \Response::json(['success'=>true,'data'=>$data]);
+
+//		return \Response::json(array(
+//			'success' => true,
+//			'data'   => $data
+//		));
+//		return Response::json($data);
+//		return Response::json($response);
+        } else
+            return "HTTP";
+//		$roomnos = RoomInfo::where('capacity', '>', $request);
+//		return $roomnos->json();
+//		$uname = Auth::user()->username;
+//		return view('roombook', ['rooms' => $roomnos, 'uname' => $uname]);
+    }
+
+    public function roombook()
+    {
 //        $roombookinginstance = Input::get('room_no');
 //        $Roombookings = \DB::table('roombook')->lists('room_no', 'id', 'starttime');
 //        $Roombookings = \DB::table('roombook')->where('room_no', $roombookinginstance);
@@ -46,149 +91,146 @@ class RoomBookController extends Controller
 //            if($Roombooking->starttime > $roombookinginstance->starttime )
 
 //        }
-		return ("Success");
-	}
+        return ("Success");
+    }
 
-	public function gotoroomcancel()
-	{
-		$uname = Auth::user()->username;
+    public function gotoroomcancel()
+    {
+        $uname = Auth::user()->username;
 
-		$bookingids = RoomBook::getBookingIDByUserID($uname);
+        $bookingids = RoomBook::getBookingIDByUserID($uname);
 
-		return view('roombookcancel')->with('uname',$uname)
-				->with('bookedrooms', $bookingids);
-	}
+        return view('roombookcancel')->with('uname', $uname)
+            ->with('bookedrooms', $bookingids);
+    }
 
-	public function roomcancel(Request $request)
-	{
-		$uname = $request->input('user');
-		$bookingid = $request->input('bookingid');
+    public function roomcancel(Request $request)
+    {
+        $uname = $request->input('user');
+        $bookingid = $request->input('bookingid');
 
-		$data = ['username' => $uname, 'id' => $bookingid ];
-		$ust = $this->promoteBooking($bookingid);
-		$status = RoomBook::delbooking($data);
-		if($status == 1)
-			$msg = "Booking Cancelled";
-		else
-			$msg = "There was some problem with cancellation";
-			return redirect('roombookcancel')->with('statusmsg',$msg);
+        $data = ['username' => $uname, 'id' => $bookingid];
+        $ust = $this->promoteBooking($bookingid);
+        $status = RoomBook::delbooking($data);
+        if ($status == 1)
+            $msg = "Booking Cancelled";
+        else
+            $msg = "There was some problem with cancellation";
+        return redirect('roombookcancel')->with('statusmsg', $msg);
 
 
-	}
+    }
 
-	public static function promoteBooking($bookingid)
-	{
-		// get list of rooms with waiting status on the same room
-		// sort the output in ascending order and pick 1st row
-		// change its booking status to C
+    public static function promoteBooking($bookingid)
+    {
+        // get list of rooms with waiting status on the same room
+        // sort the output in ascending order and pick 1st row
+        // change its booking status to C
 
-		$oldbooking = DB::table('roombook')->where('id', $bookingid)->get();
+        $oldbooking = DB::table('roombook')->where('id', $bookingid)->get();
 //		dd($oldbooking[0]->id);
 
-		$waitingroom = DB::table('roombook')
-			->where('starttime', '<', $oldbooking[0]->endtime)
-			->where('starttime', '>', $oldbooking[0]->starttime)
-			->where('status', 'W')
-			->orderBy('id')
-			->first();
+        $waitingroom = DB::table('roombook')
+            ->where('starttime', '<', $oldbooking[0]->endtime)
+            ->where('starttime', '>', $oldbooking[0]->starttime)
+            ->where('status', 'W')
+            ->orderBy('id')
+            ->first();
 
-		if($waitingroom)
-		{
-			$updstatus = DB::table('roombook')
-				->where('id', $waitingroom->id)
-				->update(['status' => 'C']);
-		}
-		else
-		{
-			$updstatus = 0;
-		}
+        if ($waitingroom) {
+            $updstatus = DB::table('roombook')
+                ->where('id', $waitingroom->id)
+                ->update(['status' => 'C']);
+        } else {
+            $updstatus = 0;
+        }
 
-		return $updstatus;
-	}
+        return $updstatus;
+    }
 
-	/**
-	 * Store a newly created resource in storage.
-	 *
-	 * @param  Request $request
-	 * @return Response
-	 */
-	public function store(Request $request)
-	{
-		$hname = Auth::user();
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  Request $request
+     * @return Response
+     */
+    public function store(Request $request)
+    {
+        $hname = Auth::user();
 
-		$rno = Input::get('room_no');
+        $rno = Input::get('room_no');
 
-		$st = Carbon::createFromFormat('d-m-Y H:i', Input::get('starttime'));
-		$et = Carbon::createFromFormat('d-m-Y H:i', Input::get('endtime'));
+        $st = Carbon::createFromFormat('d-m-Y H:i', Input::get('starttime'));
+        $et = Carbon::createFromFormat('d-m-Y H:i', Input::get('endtime'));
 
 
-		$currbooking = RoomBook::where('room_no', $rno)
-			->where('starttime', '<', $et)
-			->where('endtime', '>', $st)->get();
+        $currbooking = RoomBook::where('room_no', $rno)
+            ->where('starttime', '<', $et)
+            ->where('endtime', '>', $st)->get();
 
-		$otherinputs = Input::except(array('_token', 'starttime', 'endtime'));
-		$otherinputs['starttime'] = $st;
-		$otherinputs['endtime'] = $et;
+        $otherinputs = Input::except(array('_token', 'starttime', 'endtime'));
+        $otherinputs['starttime'] = $st;
+        $otherinputs['endtime'] = $et;
 
-		if (!count($currbooking)) {
+        if (!count($currbooking)) {
 
-			$otherinputs['status'] = 'C';
-			RoomBook::saveFormData($otherinputs);
+            $otherinputs['status'] = 'C';
+            RoomBook::saveFormData($otherinputs);
 
-			return redirect('home');
-		} else {
-			$otherinputs['status'] = 'W';
-			RoomBook::saveFormData($otherinputs);
+            return redirect('home');
+        } else {
+            $otherinputs['status'] = 'W';
+            RoomBook::saveFormData($otherinputs);
 
-			return redirect('home');
-		}
+            return redirect('home');
+        }
 
 //		return ("room booked");
-	}
+    }
 
-	/**
-	 * Display the specified resource.
-	 *
-	 * @param  int $id
-	 * @return Response
-	 */
-	public function show($id)
-	{
-		//
-	}
+    /**
+     * Display the specified resource.
+     *
+     * @param  int $id
+     * @return Response
+     */
+    public function show($id)
+    {
+        //
+    }
 
-	/**
-	 * Show the form for editing the specified resource.
-	 *
-	 * @param  int $id
-	 * @return Response
-	 */
-	public function edit($id)
-	{
-		//
-	}
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int $id
+     * @return Response
+     */
+    public function edit($id)
+    {
+        //
+    }
 
-	/**
-	 * Update the specified resource in storage.
-	 *
-	 * @param  Request $request
-	 * @param  int $id
-	 * @return Response
-	 */
-	public function update(Request $request, $id)
-	{
-		//
-	}
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  Request $request
+     * @param  int $id
+     * @return Response
+     */
+    public function update(Request $request, $id)
+    {
+        //
+    }
 
-	/**
-	 * Remove the specified resource from storage.
-	 *
-	 * @param  int $id
-	 * @return Response
-	 */
-	public function destroy($id)
-	{
-		//
-	}
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int $id
+     * @return Response
+     */
+    public function destroy($id)
+    {
+        //
+    }
 
 }

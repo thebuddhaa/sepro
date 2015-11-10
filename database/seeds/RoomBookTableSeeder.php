@@ -18,6 +18,8 @@ class RoomBookTableSeeder extends Seeder
             'user' => 'sanketark',
             'duration' => 'NULL',
             'purpose' => 'Seminar PPT',
+            'eventtype' => 'ppt',
+            'capacity' => '25',
             'status' => 'C',
             'starttime' => '2015-10-22 05:00:00',
             'endtime' => '2015-10-22 06:00:00'
@@ -27,18 +29,22 @@ class RoomBookTableSeeder extends Seeder
             'user' => 'sanketark',
             'duration' => 'NULL',
             'purpose' => 'Walker ppt',
-            'status' => 'W',
-            'starttime' => '2015-10-22 05:20:00',
-            'endtime' => '2015-10-22 06:10:00'
+            'eventtype' => 'ppt',
+            'capacity' => '30',
+            'status' => 'C',
+            'starttime' => '2015-10-25 05:20:00',
+            'endtime' => '2015-10-25 06:10:00'
         ));
         \App\RoomBook::create(array(
             'room_no' => 'sic-301',
             'user' => 'abhay',
             'duration' => 'NULL',
-            'purpose' => 'Walker ppt',
+            'purpose' => 'Lecture Series',
+            'eventtype' => 'lecture',
+            'capacity' => '50',
             'status' => 'C',
-            'starttime' => '2015-10-23 05:20:00',
-            'endtime' => '2015-10-23 06:10:00'
+            'starttime' => '2015-11-11 05:20:00',
+            'endtime' => '2015-11-12 06:10:00'
         ));
     }
 }

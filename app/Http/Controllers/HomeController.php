@@ -105,11 +105,15 @@ class HomeController extends Controller
             ->where('endtime','>',Carbon::now())
             ->get();
 
+        $newuser = User::where('status','R')
+            ->count();
+
         if ($hname->status == 'R')
             return redirect('awaitingconfirmation');
         else
             return view('home')->with(['user_earlier_booked' => $user_earlier_booked])
-                ->with('hname', $hname);
+                ->with('hname', $hname)
+                ->with('nusers',$newuser);
     }
 
     public static function getbookedRooms()
@@ -191,6 +195,14 @@ class HomeController extends Controller
             $msg = "There was a problem with Deleting User Information";
 
         return redirect('confirmusers')->with('statusmsg', $msg);
+    }
+
+    public static function viewCurrUsers()
+    {
+        $allusers = User::all();
+
+        return view('viewcurrentusers')
+            ->with('allusers', $allusers);
     }
 
 }

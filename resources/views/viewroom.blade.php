@@ -4,10 +4,10 @@
 
         <!-- Page Content -->
     <div class="row">
-        <div class="col-lg-6 text-left">
+        <div class="col-lg-12 text-left">
             <h1>List of Rooms</h1>
 
-            <table border="2" class="table table-striped table-bordered" data-height="400" >
+            <table border="2" class="table table-striped table-bordered table-hover table-responsive" data-height="400" >
                 <tr>
                     <th >Room number</th>
                     <th >Location</th>

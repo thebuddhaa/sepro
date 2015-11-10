@@ -29,7 +29,8 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('roombook', ['middleware' => 'auth', 'uses' => 'RoomBookController@index']);
+Route::get('roombook', ['middleware' => 'auth', 'uses' => 'RoomBookController@gotoroombook']);
+Route::post('roombook/cap', 'RoomBookController@getroomswithcap');
 Route::get('roombookcancel', ['middleware' => 'auth', 'uses' => 'RoomBookController@gotoroomcancel']);
 Route::post('roombook_action', 'RoomBookController@store');
 Route::post('roombookcancel_action', 'RoomBookController@roomcancel');
@@ -40,6 +41,8 @@ Route::post('roomaddaction', 'RoomInfoController@addroomaction');
 Route::get('viewroom', ['middleware' => 'auth', 'uses' => 'RoomInfoController@viewroom']);
 Route::get('confirmusers', ['middleware' => 'auth', 'uses' => 'HomeController@viewNewUsers']);
 Route::post('authorizeuser', ['middleware' => 'auth', 'uses' => 'HomeController@authorizeUser']);
+Route::get('viewusers', ['middleware' => 'auth', 'uses' => 'HomeController@viewCurrUsers']);
+
 
 Route::controllers([
     'auth' => 'Auth\AuthController',
@@ -51,3 +54,6 @@ Route::get('home', ['middleware' => 'auth', 'uses' => 'HomeController@gotohome']
 Route::get('bookedrooms', ['middleware' => 'auth', 'uses' => 'HomeController@getbookedRooms']);
 
 Route::get('awaitingconfirmation', ['middleware' => 'auth', 'uses' => 'HomeController@awaitingconf']);
+
+
+Route::get('hey','HeyController@index');

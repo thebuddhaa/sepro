@@ -14,11 +14,13 @@ class CreateRoombookTable extends Migration
     {
         Schema::create('roombook', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('room_no')->references('room_no')->on('room_info');;
+            $table->string('room_no')->references('room_no')->on('room_info');
             $table->string('user');
             $table->foreign('user')->references('username')->on('users');
             $table->integer('duration')->nullable();
             $table->string('purpose');
+            $table->string('eventtype');
+            $table->string('capacity')->nullable();
             $table->char('status', 1);
             $table->dateTime('starttime');
             $table->dateTime('endtime');

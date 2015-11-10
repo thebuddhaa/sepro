@@ -22,6 +22,55 @@
             $("#enddatetime").on("dp.change", function (e) {
                 $('#startdatetime').data("DateTimePicker").maxDate(e.date);
             });
+
+            // On capacity change make an ajax call
+            $("#capacityreq").change(function() {
+                lastValue = $("#capacityreq").val();
+                console.log('I am definitely sure the text box realy realy changed this time' + lastValue);
+                var url = window.location;
+                var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
+                $.ajax({
+                    type: "POST",
+                    url: url + "/cap",
+                    data: {_token: CSRF_TOKEN,data1: lastValue},
+                    success: function(response){
+//                            alert("here is the response: " + response);
+                        console.log(response);
+
+                        var model = $('#room_no');
+                        model.empty();
+                        $.each(response, function(index, element) {
+                            model.append("<option value='"+ element +"'>" + element + "</option>");
+                        });
+
+                    },
+                    error: function(e) {
+                        console.log(e.responseText);
+                    }
+                });
+            });
+//            var lastValue = '';
+//            setInterval(function() {
+//                if ($("#capacityreq").val() != lastValue) {
+//                    lastValue = $("#capacityreq").val();
+//                    console.log('I am definitely sure the text box realy realy changed this time' + lastValue);
+//                    var url = window.location;
+//                    var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
+//                    $.ajax({
+//                        type: "POST",
+//                        url: url + "/cap",
+//                        data: {_token: CSRF_TOKEN,data1: lastValue},
+//                        success: function(response){
+////                            alert("here is the response: " + response);
+//                            console.log(response);
+//                        },
+//                        error: function(e) {
+//                            console.log(e.responseText);
+//                        }
+//                    });
+//                }
+//            }, 500);
+
         });
         //        $('#enddatetime').data("DateTimePicker").show();
     </script>
@@ -50,13 +99,6 @@
                               'placeholder'=>'Username')) !!}
                 </div>
 
-                <div class="form-group">
-                    {!! Form::label('Room No:') !!}
-                    {!! Form::select('room_no', $rooms,'S',
-                        array('required',
-                              'class'=>'form-control',
-                              'placeholder'=>'Room No')) !!}
-                </div>
 
                 <div class="form-group">
                     {!! Form::label('Start Time:') !!}
@@ -85,6 +127,36 @@
                 </div>
 
                 <div class="form-group">
+                    {!! Form::label('Event type:') !!}
+                    {!! Form::select('eventtype', $eventtypes,'S',
+                        array('required',
+                              'class'=>'form-control',
+                              'placeholder'=>'Event Type')) !!}
+                </div>
+
+                <div class="form-group">
+                    {!! Form::label('Estimated room capacity:') !!}
+                    {!! Form::text('capacity', null,
+                        array('required',
+                              'class'=>'form-control',
+                              'placeholder'=>'Enter estimated room capacity for event',
+                              'id'=>'capacityreq')) !!}
+                </div>
+
+                <div class="form-group">
+                    {!! Form::label('Room No:') !!}
+                    {{--{!! Form::select('room_no', $rooms,'S',--}}
+                        {{--array('required',--}}
+                              {{--'class'=>'form-control',--}}
+                              {{--'placeholder'=>'Room No',--}}
+                              {{--'id'=>'room_no')) !!}--}}
+                    <select id="room_no" name="room_no" class = "form-control">
+                        <option>Please choose capacity</option>
+                    </select>
+                </div>
+
+
+                <div class="form-group">
                     {!! Form::submit('Book Now',
                       array('class'=>'btn btn-primary')) !!}
                     {!! Form::reset('Reset',
@@ -96,7 +168,7 @@
     {!! Form::close() !!}
 
     <div class="col-lg-6">
-        <img src="images/tablet-1.jpg" style="width: 80%; height: 50%;">
+        <img src="images/tablet-1.jpg" style="width: 110%; height: 60%;">
     </div>
 
 @endsection

@@ -29,6 +29,21 @@ class RoomInfo extends Model
         return $lsofroomnos;
     }
 
+    public static function getRoomsGreaterThanCapacity($cap)
+    {
+        $mincap = RoomInfo::where('capacity', '>=', $cap)
+            ->min('capacity');
+
+//        dd($mincap);
+
+        if(!$mincap)
+            $lsofrooms = ["msg"=>"No rooms of this capacity available"];
+        else
+            $lsofrooms = RoomInfo::whereIn('capacity',[$mincap])
+            ->lists('room_no');
+        return $lsofrooms;
+    }
+
     /**
      * A room can be booked many times
      *
