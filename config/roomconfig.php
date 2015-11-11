@@ -20,4 +20,6 @@ return ['event_types'   =>  [
         'duration'   =>  '168',
         'priority' => '4'
     ]
-]];
+],
+    'user_limit' => '5'
+];

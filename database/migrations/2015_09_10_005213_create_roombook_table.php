@@ -20,6 +20,7 @@ class CreateRoombookTable extends Migration
             $table->integer('duration')->nullable();
             $table->string('purpose');
             $table->string('eventtype');
+            $table->integer('priority');
             $table->string('capacity')->nullable();
             $table->char('status', 1);
             $table->dateTime('starttime');

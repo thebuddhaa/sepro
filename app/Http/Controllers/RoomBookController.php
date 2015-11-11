@@ -40,7 +40,7 @@ class RoomBookController extends Controller
     {
         $settings = (Config::get('roomconfig.event_types'));
 //        return $settings;
-        $eventnames;
+//        $eventnames;
         foreach ($settings as $key => $value) {
             $eventnames[$key] = $value['event'];
         }
@@ -76,10 +76,6 @@ class RoomBookController extends Controller
 //		return Response::json($response);
         } else
             return "HTTP";
-//		$roomnos = RoomInfo::where('capacity', '>', $request);
-//		return $roomnos->json();
-//		$uname = Auth::user()->username;
-//		return view('roombook', ['rooms' => $roomnos, 'uname' => $uname]);
     }
 
     public function roombook()
@@ -124,8 +120,8 @@ class RoomBookController extends Controller
     public static function promoteBooking($bookingid)
     {
         // get list of rooms with waiting status on the same room
-        // sort the output in ascending order and pick 1st row
-        // change its booking status to C
+        // sort the output in ascending order of priority and request time
+        // and pick 1st row change its booking status to C
 
         $oldbooking = DB::table('roombook')->where('id', $bookingid)->get();
 //		dd($oldbooking[0]->id);
@@ -134,6 +130,7 @@ class RoomBookController extends Controller
             ->where('starttime', '<', $oldbooking[0]->endtime)
             ->where('starttime', '>', $oldbooking[0]->starttime)
             ->where('status', 'W')
+            ->orderBy('priority')
             ->orderBy('id')
             ->first();
 
@@ -163,6 +160,13 @@ class RoomBookController extends Controller
         $st = Carbon::createFromFormat('d-m-Y H:i', Input::get('starttime'));
         $et = Carbon::createFromFormat('d-m-Y H:i', Input::get('endtime'));
 
+        $bookinglimit = Config::get('roomconfig.user_limit');
+        $nouserbookings = RoomBook::where('user', $hname->username)
+            ->where('starttime', '>', Carbon::now())
+            ->count();
+
+        if($nouserbookings >= $bookinglimit)
+            return redirect('roombook')->with('statusmsg', 'Room Booking Limit Reached');
 
         $currbooking = RoomBook::where('room_no', $rno)
             ->where('starttime', '<', $et)
@@ -171,6 +175,11 @@ class RoomBookController extends Controller
         $otherinputs = Input::except(array('_token', 'starttime', 'endtime'));
         $otherinputs['starttime'] = $st;
         $otherinputs['endtime'] = $et;
+
+        $evttype = Input::get('eventtype');
+        $evtconfig = Config::get('roomconfig.event_types');
+
+        $otherinputs['priority'] = $evtconfig[$evttype]['priority'];
 
         if (!count($currbooking)) {
 

@@ -10,7 +10,7 @@
 
         $(function () {
             $('#startdatetime,#enddatetime').datetimepicker({
-                minDate: moment(1, 'H'),
+                minDate: new Date(),
                 format: 'DD-MM-YYYY HH:mm'
             });
             $('#enddatetime').datetimepicker({
@@ -81,6 +81,12 @@
 
 
     <h2>Book Room:</h2>
+
+    @if(session('statusmsg'))
+        <div class="alert alert-danger">
+            {{ session('statusmsg') }}
+        </div>
+    @endif
 
     {!! Form::open(array('url' => 'roombook_action')) !!}
 
