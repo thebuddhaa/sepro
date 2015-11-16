@@ -54,7 +54,7 @@
 
                 <div class="form-group">
                     {!! Form::label('Booking ID:') !!}
-                    {!! Form::select('bookingid', $bookedrooms,'S',
+                    {!! Form::select('bookingid', [null=>'Please Select'] + $bookedrooms,'S',
                         array('required',
                               'class'=>'form-control',
                               'placeholder'=>'Enter Booking ID')) !!}
@@ -62,7 +62,7 @@
 
                 <div class="form-group">
                     {!! Form::submit('Cancel Booking',
-                      array('class'=>'btn btn-primary')) !!}
+                      array('class'=>'btn btn-danger')) !!}
                 </div>
             </div>
         </div>

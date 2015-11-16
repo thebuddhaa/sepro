@@ -56,4 +56,4 @@ Route::get('bookedrooms', ['middleware' => 'auth', 'uses' => 'HomeController@get
 Route::get('awaitingconfirmation', ['middleware' => 'auth', 'uses' => 'HomeController@awaitingconf']);
 
 
-Route::get('hey','HeyController@index');
+//Route::get('hey','HeyController@index');

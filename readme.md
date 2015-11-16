@@ -1,27 +1,33 @@
-## Laravel PHP Framework
+## Room Booking System
 
 [![Build Status](https://travis-ci.org/laravel/framework.svg)](https://travis-ci.org/laravel/framework)
-[![Total Downloads](https://poser.pugx.org/laravel/framework/d/total.svg)](https://packagist.org/packages/laravel/framework)
-[![Latest Stable Version](https://poser.pugx.org/laravel/framework/v/stable.svg)](https://packagist.org/packages/laravel/framework)
 [![Latest Unstable Version](https://poser.pugx.org/laravel/framework/v/unstable.svg)](https://packagist.org/packages/laravel/framework)
 [![License](https://poser.pugx.org/laravel/framework/license.svg)](https://packagist.org/packages/laravel/framework)
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable, creative experience to be truly fulfilling. Laravel attempts to take the pain out of development by easing common tasks used in the majority of web projects, such as authentication, routing, sessions, queueing, and caching.
+Room Booking System is a generic Room Booking System. It is built as a part of Software Engineering course project. It is a built using **Laravel PHP Framework**, **MySQL** database, **Bootstrap**.
 
-Laravel is accessible, yet powerful, providing powerful tools needed for large, robust applications. A superb inversion of control container, expressive migration system, and tightly integrated unit testing support give you the tools you need to build any application with which you are tasked.
+## Installation
+
+1. Install *Apache Web Server >v2.4.9* with *PHP v5.5.x* support, *MySQL >v5.6.17* independently or install Wamp Server v2.5 or later from the [WampServer](http://www.wampserver.com/en/) site. WampServer includes the required packages.
+2. Install Laravel PHP Framework by following the guide at [Laravel Docs](http://laravel.com/docs/5.1/)
+> php artisan migrate
+3. Go to the web directory where the code is installed on the server in command prompt/terminal. Run the following command to create the remaining parts of the database
+4. Run the following command to create the default user
+> php artisan db:seed
+5. To setup the Room Information, run the *room_info.sql* SQL script in `/public/init.scripts` directory. 
+6. Go to the URL which you have setup for the project 
+> for e.g. http://localhost:8000/
+You should get the home page of the application.
+
+## Developers
+
+Sanket 
+Abhay
 
 ## Official Documentation
 
 Documentation for the framework can be found on the [Laravel website](http://laravel.com/docs).
 
-## Contributing
-
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](http://laravel.com/docs/contributions).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell at taylor@laravel.com. All security vulnerabilities will be promptly addressed.
-
 ### License
 
-The Laravel framework is open-sourced software licensed under the [MIT license](http://opensource.org/licenses/MIT)
+This project is open-sourced software licensed under the [MIT license](http://opensource.org/licenses/MIT)

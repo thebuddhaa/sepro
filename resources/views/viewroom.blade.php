@@ -8,7 +8,7 @@
             <h1>List of Rooms</h1>
 
             <table border="2" class="table table-striped table-bordered table-hover table-responsive" data-height="400" >
-                <tr>
+                <tr class="info">
                     <th >Room number</th>
                     <th >Location</th>
                     <th >Room type</th>

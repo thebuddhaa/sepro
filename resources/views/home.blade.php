@@ -7,9 +7,9 @@
 
     <div class="row">
 
-        <h1 style="text-align: center">Room Booking Portal</h1>
+        <h1 style="font-family:serif;text-align: center">Room Booking Portal</h1>
 
-        <h2>Welcome {{$hname->name}},</h2>
+        <h3>Welcome {{$hname->name}},</h3>
         {{--<p class="lead">This is a Room Booking Portal.</p>--}}
 
         {{--<div class="jumbotron">--}}

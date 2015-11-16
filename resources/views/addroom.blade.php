@@ -75,4 +75,8 @@
     </div>
     {!! Form::close() !!}
 
+    <div class="col-lg-6">
+        <img src="images/roompaint.jpg" class="img-thumbnail img-responsive" >
+    </div>
+
 @endsection

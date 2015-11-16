@@ -18,13 +18,13 @@ class UserTableSeeder extends Seeder
             'status' => 'A',
             'password' => Hash::make('mypass'),
         ));
-        \App\User::create(array(
+/*        \App\User::create(array(
             'name'     => 'sanket',
             'username' => 'sanketark',
             'email'    => 'sanketark@iitb.ac.in',
             'role' => 'user',
             'status' => 'A',
             'password' => Hash::make('sanket'),
-        ));
+        ));*/
     }
 }

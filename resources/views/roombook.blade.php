@@ -134,7 +134,7 @@
 
                 <div class="form-group">
                     {!! Form::label('Event type:') !!}
-                    {!! Form::select('eventtype', $eventtypes,'S',
+                    {!! Form::select('eventtype', [null=>'Please Select'] +$eventtypes,'S',
                         array('required',
                               'class'=>'form-control',
                               'placeholder'=>'Event Type')) !!}
@@ -164,9 +164,9 @@
 
                 <div class="form-group">
                     {!! Form::submit('Book Now',
-                      array('class'=>'btn btn-primary')) !!}
+                      array('class'=>'btn btn-success')) !!}
                     {!! Form::reset('Reset',
-                      array('class'=>'btn btn-secondary')) !!}
+                      array('class'=>'btn btn-default')) !!}
                 </div>
             </div>
         </div>
@@ -174,7 +174,7 @@
     {!! Form::close() !!}
 
     <div class="col-lg-6">
-        <img src="images/tablet-1.jpg" style="width: 110%; height: 60%;">
+        <img src="images/tablet-1.jpg" class="img-thumbnail" style="width: ;: 110%; height: 60%;">
     </div>
 
 @endsection
