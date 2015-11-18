@@ -39,7 +39,20 @@ class RoomInfoController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $roomno = $request->get('room_no');
+        $roomexists = RoomInfo::where('room_no',$roomno)->value('room_no');
+
+        if($roomexists)
+            $retstatus = 0;
+        else
+            $retstatus = RoomInfo::saveFormData($request->except(array('_token')));
+        if (is_null($retstatus))
+            $msg = "New Room Added";
+        else
+            $msg = "There was some problem with adding this room";
+//        dd($msg);
+//        return view('addroom')->with('statusmsg',$msg);
+        return redirect('addroom')->with('statusmsg',$msg);
     }
 
     /**
@@ -87,20 +100,13 @@ class RoomInfoController extends Controller
         //
     }
 
-    public function addroom()
-    {
-        return view('addroom');
-    }
-
     /**
-     * Add Room information
+     * Display Add Room Form
      *
-     * @param Request $request
      * @return \Illuminate\View\View
      */
-    public function addroomaction(Request $request)
+    public function addroom()
     {
-        RoomInfo::saveFormData(Input::except(array('_token')));
         return view('addroom');
     }
 

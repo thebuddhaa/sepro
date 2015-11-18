@@ -54,9 +54,10 @@
 
         <div class="form-group">
             {!! Form::label('Capacity:') !!}
-            {!! Form::text('capacity', null,
+            {!! Form::input('number','capacity', null,
                 array('required',
                       'class'=>'form-control',
+                      'min'=>'1',
                       'placeholder'=>'Capacity')) !!}
         </div>
 
@@ -78,5 +79,10 @@
     <div class="col-lg-6">
         <img src="images/roompaint.jpg" class="img-thumbnail img-responsive" >
     </div>
+    @if(session('statusmsg'))
+        <div class="col-lg-6 alert alert-success">
+            {{ session('statusmsg') }}
+        </div>
+    @endif
 
 @endsection

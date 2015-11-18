@@ -13,7 +13,7 @@
 
     <h2>Booked Rooms:</h2>
     <table border="2" class="table table-striped table-bordered table-responsive table-hover" data-height="400">
-        <tr>
+        <tr class="info">
             <th>Room number</th>
             <th>Purpose</th>
             <th>Scheduled on</th>

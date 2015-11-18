@@ -21,8 +21,8 @@ You should get the home page of the application.
 
 ## Developers
 
-Sanket 
-Abhay
+* Sanket 
+* Abhay
 
 ## Official Documentation
 

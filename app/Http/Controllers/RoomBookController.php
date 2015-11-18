@@ -13,6 +13,7 @@ use App\RoomBook;
 use App\RoomInfo;
 use DB;
 use Config;
+use Mail;
 
 class RoomBookController extends Controller
 {
@@ -36,6 +37,11 @@ class RoomBookController extends Controller
         //$room_no = \DB::table('room_info')->lists('room_no', 'id');
     }
 
+    /**
+     * Display Room Booking form
+     *
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\View\View
+     */
     public function gotoroombook()
     {
         $settings = (Config::get('roomconfig.event_types'));
@@ -47,9 +53,27 @@ class RoomBookController extends Controller
 //        return $eventnames;
         $roomnos = RoomInfo::getRoomNos();
         $uname = Auth::user()->username;
+
+        // Check user booking limit
+        $bookinglimit = Config::get('roomconfig.user_limit');
+        $nouserbookings = RoomBook::where('user', $uname)
+            ->where('starttime', '>', Carbon::now())
+            ->count();
+
+        if ($nouserbookings >= $bookinglimit)
+            return redirect('roombook')->with('statusmsg', 'Room Booking Limit Reached');
+        // Check user booking limit end
+
+
         return view('roombook', ['rooms' => $roomnos, 'uname' => $uname, 'eventtypes' => $eventnames]);
     }
 
+    /**
+     * Return the list of rooms with capacity greater than the argument passed
+     *
+     * @param Request $request
+     * @return array|string
+     */
     public function getroomswithcap(Request $request)
     {
 
@@ -78,18 +102,11 @@ class RoomBookController extends Controller
             return "HTTP";
     }
 
-    public function roombook()
-    {
-//        $roombookinginstance = Input::get('room_no');
-//        $Roombookings = \DB::table('roombook')->lists('room_no', 'id', 'starttime');
-//        $Roombookings = \DB::table('roombook')->where('room_no', $roombookinginstance);
-//        foreach ($Roombookings as $Roombooking) {
-//            if($Roombooking->starttime > $roombookinginstance->starttime )
-
-//        }
-        return ("Success");
-    }
-
+    /**
+     * Display Room Cancel Form
+     *
+     * @return $this
+     */
     public function gotoroomcancel()
     {
         $uname = Auth::user()->username;
@@ -100,13 +117,21 @@ class RoomBookController extends Controller
             ->with('bookedrooms', $bookingids);
     }
 
+    /**
+     * Room Cancel Function
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function roomcancel(Request $request)
     {
         $uname = $request->input('user');
         $bookingid = $request->input('bookingid');
+        $status = 0;
 
         $data = ['username' => $uname, 'id' => $bookingid];
         $ust = $this->promoteBooking($bookingid);
+
         $status = RoomBook::delbooking($data);
         if ($status == 1)
             $msg = "Booking Cancelled";
@@ -117,6 +142,12 @@ class RoomBookController extends Controller
 
     }
 
+    /**
+     * Returns the next request to be confirmed
+     *
+     * @param $bookingid
+     * @return int
+     */
     public static function promoteBooking($bookingid)
     {
         // get list of rooms with waiting status on the same room
@@ -127,12 +158,35 @@ class RoomBookController extends Controller
 //		dd($oldbooking[0]->id);
 
         $waitingroom = DB::table('roombook')
-            ->where('starttime', '<', $oldbooking[0]->endtime)
-            ->where('starttime', '>', $oldbooking[0]->starttime)
+            ->where('starttime', '<=', $oldbooking[0]->endtime)
+            ->where('starttime', '>=', $oldbooking[0]->starttime)
             ->where('status', 'W')
             ->orderBy('priority')
             ->orderBy('id')
             ->first();
+
+        if ($waitingroom) {
+            // Sending Mail to User for room availability confirmation
+            $userinfo = DB::table('users')
+                ->where('username', $waitingroom->user)
+                ->first();
+//            ->lists('email','name');
+//        dd($waitingroom);
+//        return $waitingroom['user'];
+
+            $data = array(
+                'name' => $userinfo->name,
+                'event' => $waitingroom->purpose,
+                'roomno' => $waitingroom->room_no,
+                'from' => $waitingroom->starttime,
+                'to' => $waitingroom->endtime,
+            );
+
+            Mail::queue('emails.waitingconfirm', $data, function ($message) use ($userinfo) {
+                $message->to($userinfo->email)->subject('Waiting Confirmed');
+            });
+        }
+        // Mail send complete
 
         if ($waitingroom) {
             $updstatus = DB::table('roombook')
@@ -159,14 +213,6 @@ class RoomBookController extends Controller
 
         $st = Carbon::createFromFormat('d-m-Y H:i', Input::get('starttime'));
         $et = Carbon::createFromFormat('d-m-Y H:i', Input::get('endtime'));
-
-        $bookinglimit = Config::get('roomconfig.user_limit');
-        $nouserbookings = RoomBook::where('user', $hname->username)
-            ->where('starttime', '>', Carbon::now())
-            ->count();
-
-        if($nouserbookings >= $bookinglimit)
-            return redirect('roombook')->with('statusmsg', 'Room Booking Limit Reached');
 
         $currbooking = RoomBook::where('room_no', $rno)
             ->where('starttime', '<', $et)

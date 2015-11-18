@@ -10,6 +10,8 @@ use App\Http\Controllers\Controller;
 use Auth;
 use DB;
 use App\User;
+use Mail;
+use Input;
 
 class HomeController extends Controller
 {
@@ -116,6 +118,11 @@ class HomeController extends Controller
                 ->with('nusers',$newuser);
     }
 
+    /**
+     * Get all the currently booked rooms
+     *
+     * @return $this
+     */
     public static function getbookedRooms()
     {
         $all_booked_rooms = DB::table('roombook')
@@ -125,6 +132,11 @@ class HomeController extends Controller
         return view('bookedrooms')->with(['all_booked_rooms' => $all_booked_rooms]);
     }
 
+    /**
+     * Retrieve previous booked rooms for the user
+     *
+     * @return $this
+     */
     public static function getPrevBookedRooms()
     {
         $user = Auth::user()->username;
@@ -136,12 +148,22 @@ class HomeController extends Controller
         return view('bookedrooms')->with(['all_booked_rooms' => $all_booked_rooms]);
     }
 
+    /**
+     * Home page for Unauthorized Users
+     *
+     * @return $this
+     */
     public static function awaitingconf()
     {
         $hname = Auth::user();
         return view('awaitingconfirmation')->with('hname', $hname);
     }
 
+    /**
+     * View New Unauthorized Users
+     *
+     * @return $this
+     */
     public static function viewNewUsers()
     {
         $hname = Auth::user();
@@ -163,7 +185,12 @@ class HomeController extends Controller
 //        return $request->except('_token');
     }
 
-
+    /**
+     * Confirm User registration Handler
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function postConfirmUser(Request $request)
     {
         $user = $request->except(array('_token'));
@@ -171,8 +198,13 @@ class HomeController extends Controller
         $status = User::where('id', $user['uid'])
             ->where('status', 'R')
             ->update(['status' => 'A']);
-        if ($status == 1)
+        if ($status == 1) {
             $msg = "User Registration Confirmed";
+
+            Mail::queue('emails.welcome', array('firstname'=>$request->get('name')), function($message){
+                $message->to(Input::get('email'), Input::get('name'))->subject('Welcome!!');
+            });
+        }
         else
             $msg = "There was a problem with Updating User credentials";
 
@@ -182,6 +214,12 @@ class HomeController extends Controller
 //        return $user['user'];
     }
 
+    /**
+     * Delete User handler
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function postDeleteUser(Request $request)
     {
         $user = $request->except(array('_token'));
@@ -197,12 +235,35 @@ class HomeController extends Controller
         return redirect('confirmusers')->with('statusmsg', $msg);
     }
 
+    /**
+     * View List of current Users
+     *
+     * @return $this
+     */
     public static function viewCurrUsers()
     {
         $allusers = User::all();
 
         return view('viewcurrentusers')
             ->with('allusers', $allusers);
+    }
+
+    /**
+     * Send an e-mail reminder to the user.
+     *
+     * @param  Request  $request
+     * @param  int  $id
+     * @return Response
+     */
+    public function sendEmailConfirmation(Request $request, $id)
+    {
+        $user = User::findOrFail($id);
+
+        Mail::queue('emails.reminder', ['user' => $user], function ($m) use ($user) {
+            $m->from('admin@easybook.com', 'Room Booking System');
+
+            $m->to($user->email, $user->name)->subject('Booking confirmed!');
+        });
     }
 
 }

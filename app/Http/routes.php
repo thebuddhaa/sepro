@@ -37,7 +37,7 @@ Route::post('roombookcancel_action', 'RoomBookController@roomcancel');
 Route::get('prevbookings', ['middleware' => 'auth', 'uses' => 'HomeController@getPrevBookedRooms']);
 
 Route::get('addroom', ['middleware' => 'auth', 'uses' => 'RoomInfoController@addroom']);
-Route::post('roomaddaction', 'RoomInfoController@addroomaction');
+Route::post('roomaddaction', 'RoomInfoController@store');
 Route::get('viewroom', ['middleware' => 'auth', 'uses' => 'RoomInfoController@viewroom']);
 Route::get('confirmusers', ['middleware' => 'auth', 'uses' => 'HomeController@viewNewUsers']);
 Route::post('authorizeuser', ['middleware' => 'auth', 'uses' => 'HomeController@authorizeUser']);
@@ -55,5 +55,13 @@ Route::get('bookedrooms', ['middleware' => 'auth', 'uses' => 'HomeController@get
 
 Route::get('awaitingconfirmation', ['middleware' => 'auth', 'uses' => 'HomeController@awaitingconf']);
 
-
+/*Route::get('sendemail', function () {
+    $data = array(
+        'firstname' => "Learning Laravel",
+    );
+    Mail::queue('emails.welcome', $data, function ($message) {
+        $message->to('sanketark@cse.iitb.ac.in')->subject('Learning Laravel test email');
+    });
+    return "Your email has been sent successfully";
+});*/
 //Route::get('hey','HeyController@index');

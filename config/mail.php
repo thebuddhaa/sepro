@@ -54,7 +54,7 @@ return [
     |
     */
 
-    'from' => ['address' => null, 'name' => null],
+    'from' => ['address' => 'admin@easybook.com', 'name' => 'Admin, Room Booking Portal'],
 
     /*
     |--------------------------------------------------------------------------
